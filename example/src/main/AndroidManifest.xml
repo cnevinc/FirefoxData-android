@@ -10,7 +10,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
 
-        <activity android:name="org.mozilla.fxa_data.example.FirefoxDataInRecyclerViewExampleActivity">
+        <activity android:name="org.mozilla.fxa_data.example.KotlinExampleActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -23,6 +23,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+        <activity android:name=".FirefoxDataInRecyclerViewExampleActivity"/>
     </application>
 
 </manifest>
