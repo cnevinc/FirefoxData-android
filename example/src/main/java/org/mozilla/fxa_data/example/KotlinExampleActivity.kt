@@ -71,6 +71,11 @@ public class KotlinExampleActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (data == null) {
+            isWaitingForCallback = false
+            updateUI(UIState.SIGN_IN_PROMPT)
+            return
+        }
         // Required callback.
         loginManager.onActivityResult(requestCode, resultCode, data)
     }
@@ -146,7 +151,7 @@ public class KotlinExampleActivity : AppCompatActivity() {
         runOnUiThread {
             // Reset UI state by removing all mutations we make.
             for (container in containerViews) {
-                container.visibility = View.GONE // we'll unhide one of these.
+                container?.visibility = View.GONE // we'll unhide one of these.
             }
 
             explanation_button.isEnabled = true
