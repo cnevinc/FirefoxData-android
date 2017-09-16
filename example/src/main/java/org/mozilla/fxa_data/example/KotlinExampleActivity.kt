@@ -17,13 +17,13 @@ import kotlinx.android.synthetic.main.container_loading.*
 import kotlinx.android.synthetic.main.container_show_fx_data.*
 import org.mozilla.fxa_data.FirefoxData
 import org.mozilla.fxa_data.FirefoxDataException
-import org.mozilla.fxa_data.login.FirefoxDataLoginManager
 import org.mozilla.fxa_data.download.FirefoxDataClient
-import org.mozilla.fxa_data.download.HistoryRecord
 import org.mozilla.fxa_data.download.FirefoxDataResult
+import org.mozilla.fxa_data.download.HistoryRecord
+import org.mozilla.fxa_data.login.FirefoxDataLoginManager
 import java.lang.Exception
-
 import java.lang.ref.WeakReference
+import kotlin.properties.Delegates
 
 /**
  * An example Activity that which displays a user's history in a [RecyclerView] after they log in.
@@ -42,6 +42,44 @@ public class KotlinExampleActivity : AppCompatActivity() {
 
     private enum class UIState {
         SIGN_IN_PROMPT, LOADING, ERROR, SHOW_DATA
+    }
+
+    // data store
+    var exception: Exception? = null
+    private var state: UIState by Delegates.observable(UIState.SIGN_IN_PROMPT) { property, oldValue, newValue ->
+        runOnUiThread {
+            // Reset UI state by removing all mutations we make.
+            for (container in containerViews) {
+                container?.visibility = View.GONE // we'll unhide one of these.
+            }
+
+            explanation_button.isEnabled = true
+
+
+            when (newValue) {
+                UIState.SIGN_IN_PROMPT -> {
+                    explanation_button.isEnabled = true
+                    container_explanation.visibility = View.VISIBLE
+                    setExplanationUIResources(R.string.sign_in_explanation,
+                            R.string.sign_in_button,
+                            signInAction)
+                }
+
+                UIState.ERROR -> {
+                    explanation_button.isEnabled = true
+                    container_explanation.visibility = View.VISIBLE
+                    setExplanationUIResources(resources.getString(R.string.error_explanation, exception?.toString() ?: "Unknown"),
+                            resources.getString(R.string.error_button),
+                            signOutAction)
+                }
+                KotlinExampleActivity.UIState.LOADING -> {
+                    container_loading.visibility = View.VISIBLE
+                }
+                KotlinExampleActivity.UIState.SHOW_DATA -> {
+                    container_fx_data.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private lateinit var loginManager: FirefoxDataLoginManager
@@ -147,39 +185,11 @@ public class KotlinExampleActivity : AppCompatActivity() {
     }
 
 
-    private fun updateUI(uiState: UIState, exception: Exception? = null) {
-        runOnUiThread {
-            // Reset UI state by removing all mutations we make.
-            for (container in containerViews) {
-                container?.visibility = View.GONE // we'll unhide one of these.
-            }
+    private fun updateUI(uiState: UIState, newException: Exception? = null) {
+        exception = newException
+        state = uiState
 
-            explanation_button.isEnabled = true
 
-            // Mutate to the new state for the given arguments.
-            if (uiState == UIState.SHOW_DATA) {
-                // Adapter takes care of data updates.
-                container_fx_data.visibility = View.VISIBLE
-            } else if (uiState == UIState.SIGN_IN_PROMPT || uiState == UIState.ERROR) {
-                container_explanation.visibility = View.VISIBLE
-            } else {
-                container_loading.visibility = View.VISIBLE
-            }
-
-            when (uiState) {
-                UIState.SIGN_IN_PROMPT -> {
-                    setExplanationUIResources(R.string.sign_in_explanation,
-                            R.string.sign_in_button,
-                            signInAction)
-                }
-
-                UIState.ERROR -> {
-                    setExplanationUIResources(resources.getString(R.string.error_explanation, exception?.toString() ?: "Unknown"),
-                            resources.getString(R.string.error_button),
-                            signOutAction)
-                }
-            }
-        }
     }
 
 
@@ -208,3 +218,4 @@ public class KotlinExampleActivity : AppCompatActivity() {
     }
 
 }
+
