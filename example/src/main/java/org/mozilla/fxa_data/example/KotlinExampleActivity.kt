@@ -4,6 +4,7 @@
 
 package org.mozilla.fxa_data.example
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.StringRes
@@ -60,16 +61,16 @@ public class KotlinExampleActivity : AppCompatActivity() {
                 UIState.SIGN_IN_PROMPT -> {
                     explanation_button.isEnabled = true
                     container_explanation.visibility = View.VISIBLE
-                    setExplanationUIResources(R.string.sign_in_explanation,
-                            R.string.sign_in_button,
+                    setExplanationUIResources(R.string.sign_in_explanation.toResString(this),
+                            R.string.sign_in_button.toResString(this),
                             signInAction)
                 }
 
                 UIState.ERROR -> {
                     explanation_button.isEnabled = true
                     container_explanation.visibility = View.VISIBLE
-                    setExplanationUIResources(resources.getString(R.string.error_explanation, exception?.toString() ?: "Unknown"),
-                            resources.getString(R.string.error_button),
+                    setExplanationUIResources(R.string.error_explanation.toResString(this, exception?.toString() ?: "Unknown"),
+                            R.string.error_button.toResString(this),
                             signOutAction)
                 }
                 KotlinExampleActivity.UIState.LOADING -> {
@@ -188,18 +189,10 @@ public class KotlinExampleActivity : AppCompatActivity() {
     private fun updateUI(uiState: UIState, newException: Exception? = null) {
         exception = newException
         state = uiState
-
-
     }
 
 
-    private fun setExplanationUIResources(@StringRes explanationRes: Int, @StringRes buttonTextRes: Int,
-                                          onButtonClick: (View) -> Unit) {
-        val res = resources
-        setExplanationUIResources(res.getString(explanationRes), res.getString(buttonTextRes), onButtonClick)
-    }
-
-    private fun setExplanationUIResources(explanation: String, buttonText: String, onButtonClick: (View) -> Unit) {
+    private fun setExplanationUIResources(explanation: String?, buttonText: String?, onButtonClick: (View) -> Unit) {
         explanation_text.text = explanation
         explanation_button.text = buttonText
 
@@ -218,4 +211,7 @@ public class KotlinExampleActivity : AppCompatActivity() {
     }
 
 }
+
+fun Int.toResString(context: Context): String? = context.getString(this)
+fun Int.toResString(context: Context, vararg formatArgs: Any): String? = context.getString(this, formatArgs)
 
