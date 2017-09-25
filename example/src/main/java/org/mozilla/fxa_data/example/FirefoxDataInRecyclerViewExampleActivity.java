@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import org.mozilla.fxa_data.FirefoxData;
 import org.mozilla.fxa_data.FirefoxDataException;
 import org.mozilla.fxa_data.login.FirefoxDataLoginManager;
@@ -32,13 +33,13 @@ import java.util.List;
  * An example Activity that which displays a user's history in a {@link RecyclerView} after they log in.
  * If they're already logged in, the data will just be shown. Once the data is shown, the user can click
  * "Sign out" to sign out.
- *
+ * <p>
  * This Activity will switch between four states:
  * - Prompt for sign in
  * - Loading
  * - Error logging in or fetching Firefox data
  * - Display user's history.
- *
+ * <p>
  * This is a fairly realistic use case. For a simpler example, see {@link SimpleExampleActivity}.
  */
 public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity {
@@ -114,7 +115,9 @@ public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity 
         @Override
         public void onSuccess(final FirefoxDataClient dataClient) {
             final FirefoxDataInRecyclerViewExampleActivity activity = activityWeakReference.get();
-            if (activity == null) { return; }
+            if (activity == null) {
+                return;
+            }
 
             activity.isWaitingForCallback = false;
             final FirefoxDataResult<List<HistoryRecord>> result;
@@ -132,7 +135,9 @@ public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity 
         @Override
         public void onFailure(final FirefoxDataException e) {
             final FirefoxDataInRecyclerViewExampleActivity activity = activityWeakReference.get();
-            if (activity == null) { return; }
+            if (activity == null) {
+                return;
+            }
 
             activity.updateUI(UIState.ERROR, e);
         }
@@ -140,7 +145,9 @@ public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity 
         @Override
         public void onUserCancel() {
             final FirefoxDataInRecyclerViewExampleActivity activity = activityWeakReference.get();
-            if (activity == null) { return; }
+            if (activity == null) {
+                return;
+            }
 
             activity.isWaitingForCallback = false;
             activity.updateUI(UIState.SIGN_IN_PROMPT);
@@ -202,6 +209,8 @@ public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity 
                                 res.getString(R.string.error_button),
                                 new SignOutOnClickListener());
                         break;
+                    default:
+                        return;
                 }
 
             }
@@ -209,7 +218,7 @@ public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity 
     }
 
     private void setExplanationUIResources(@StringRes final int explanationRes, @StringRes final int buttonTextRes,
-            final View.OnClickListener onButtonClick) {
+                                           final View.OnClickListener onButtonClick) {
         final Resources res = getResources();
         setExplanationUIResources(res.getString(explanationRes), res.getString(buttonTextRes), onButtonClick);
     }

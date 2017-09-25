@@ -9,12 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import org.mozilla.fxa_data.download.HistoryRecord;
 
 import java.util.Collections;
 import java.util.List;
 
-/** An adapter for a list of history items. */
+/**
+ * An adapter for a list of history items.
+ */
 class FirefoxHistoryAdapter extends RecyclerView.Adapter<FirefoxHistoryAdapter.HistoryViewHolder> {
 
     private List<HistoryRecord> historyRecords = Collections.emptyList();
@@ -38,7 +41,9 @@ class FirefoxHistoryAdapter extends RecyclerView.Adapter<FirefoxHistoryAdapter.H
     }
 
     @Override
-    public int getItemCount() { return historyRecords.size(); }
+    public int getItemCount() {
+        return historyRecords.size();
+    }
 
     static class HistoryViewHolder extends RecyclerView.ViewHolder {
         private final TextView titleView;
