@@ -7,7 +7,6 @@ package org.mozilla.fxa_data.example
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -56,7 +55,6 @@ public class KotlinExampleActivity : AppCompatActivity() {
 
             explanation_button.isEnabled = true
 
-
             when (newValue) {
                 UIState.SIGN_IN_PROMPT -> {
                     explanation_button.isEnabled = true
@@ -93,7 +91,6 @@ public class KotlinExampleActivity : AppCompatActivity() {
                 container_loading,
                 container_fx_data)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,23 +176,19 @@ public class KotlinExampleActivity : AppCompatActivity() {
         updateUI(UIState.LOADING)
     }
 
-
     val signOutAction = { v: View ->
         loginManager.signOut()
         updateUI(UIState.SIGN_IN_PROMPT)
     }
-
 
     private fun updateUI(uiState: UIState, newException: Exception? = null) {
         exception = newException
         state = uiState
     }
 
-
     private fun setExplanationUIResources(explanation: String?, buttonText: String?, onButtonClick: (View) -> Unit) {
         explanation_text.text = explanation
         explanation_button.text = buttonText
-
         explanation_button.setOnClickListener(onButtonClick)
     }
 
