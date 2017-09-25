@@ -6,8 +6,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'checkstyle'
+check.dependsOn 'ktlint'
 
 check.dependsOn 'checkstyle'
+
+configurations {
+    ktlint
+}
 
 android {
     compileSdkVersion 25
@@ -45,6 +50,8 @@ dependencies {
 
     compile project(':download')
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    ktlint 'com.github.shyiko:ktlint:0.9.2'
 }
 
 
@@ -55,4 +62,10 @@ task checkstyle(type: Checkstyle) {
     exclude '**/gen/**'
 
     classpath = files()
+}
+
+task ktlint(type: JavaExec) {
+    main = "com.github.shyiko.ktlint.Main"
+    classpath = configurations.ktlint
+    args "src/**/*.kt"
 }
