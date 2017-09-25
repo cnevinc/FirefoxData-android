@@ -38,7 +38,7 @@ import kotlin.properties.Delegates
 
  * This is a fairly realistic use case. For a simpler example, see [SimpleExampleActivity].
  */
-public class KotlinExampleActivity : AppCompatActivity() {
+class KotlinExampleActivity : AppCompatActivity() {
 
     private enum class UIState {
         SIGN_IN_PROMPT, LOADING, ERROR, SHOW_DATA
@@ -46,7 +46,7 @@ public class KotlinExampleActivity : AppCompatActivity() {
 
     // data store
     var exception: Exception? = null
-    private var state: UIState by Delegates.observable(UIState.SIGN_IN_PROMPT) { property, oldValue, newValue ->
+    private var state: UIState by Delegates.observable(UIState.SIGN_IN_PROMPT) { _, _, newValue ->
         runOnUiThread {
             // Reset UI state by removing all mutations we make.
             for (container in containerViews) {
