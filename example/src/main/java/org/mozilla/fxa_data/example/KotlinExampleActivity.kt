@@ -206,5 +206,5 @@ class KotlinExampleActivity : AppCompatActivity() {
 }
 
 fun Int.toResString(context: Context): String? = context.getString(this)
-fun Int.toResString(context: Context, vararg formatArgs: Any): String? = context.getString(this, formatArgs)
+fun Int.toResString(context: Context, formatArgs: String): String? = context.getString(this, formatArgs)
 
