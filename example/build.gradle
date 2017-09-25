@@ -5,6 +5,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'checkstyle'
+
+check.dependsOn 'checkstyle'
 
 android {
     compileSdkVersion 25
@@ -42,4 +45,14 @@ dependencies {
 
     compile project(':download')
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+}
+
+
+task checkstyle(type: Checkstyle) {
+    configFile file("${project.rootDir}/quality/square_picasso_checkstyle.xml")
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
 }
