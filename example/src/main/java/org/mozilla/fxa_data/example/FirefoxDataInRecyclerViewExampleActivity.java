@@ -82,6 +82,13 @@ public class FirefoxDataInRecyclerViewExampleActivity extends AppCompatActivity 
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // if we press back button at login page, data will be null, if we pass null to loginManager, it'll return directly.
+        // thus UIStatus won't be updated. So return early if intent data is null;
+        if (data == null) {
+            isWaitingForCallback = false;
+            updateUI(UIState.SIGN_IN_PROMPT);
+            return;
+        }
         // Required callback.
         loginManager.onActivityResult(requestCode, resultCode, data);
     }
