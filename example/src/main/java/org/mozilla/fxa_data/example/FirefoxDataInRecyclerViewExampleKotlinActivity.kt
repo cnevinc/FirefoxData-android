@@ -38,7 +38,7 @@ import kotlin.properties.Delegates
 
  * This is a fairly realistic use case. For a simpler example, see [SimpleExampleActivity].
  */
-class KotlinExampleActivity : AppCompatActivity() {
+public class FirefoxDataInRecyclerViewExampleKotlinActivity : AppCompatActivity() {
 
     private enum class UIState {
         SIGN_IN_PROMPT, LOADING, ERROR, SHOW_DATA
@@ -71,10 +71,10 @@ class KotlinExampleActivity : AppCompatActivity() {
                             R.string.error_button.toResString(this),
                             signOutAction)
                 }
-                KotlinExampleActivity.UIState.LOADING -> {
+                FirefoxDataInRecyclerViewExampleKotlinActivity.UIState.LOADING -> {
                     container_loading.visibility = View.VISIBLE
                 }
-                KotlinExampleActivity.UIState.SHOW_DATA -> {
+                FirefoxDataInRecyclerViewExampleKotlinActivity.UIState.SHOW_DATA -> {
                     container_fx_data.visibility = View.VISIBLE
                 }
             }
@@ -96,7 +96,7 @@ class KotlinExampleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_firefox_data_in_recycler_view_example)
 
-        supportActionBar?.title = KotlinExampleActivity::class.simpleName
+        supportActionBar?.title = FirefoxDataInRecyclerViewExampleKotlinActivity::class.simpleName
 
         initFirefoxDataView()
 
@@ -135,7 +135,7 @@ class KotlinExampleActivity : AppCompatActivity() {
 
     // This Kotlin nested class without inner key
     // word doesn't keep a reference to outer class, which won't cause memory leaks.
-    private class LoginCallback(activity: KotlinExampleActivity) : FirefoxDataLoginManager.LoginCallback {
+    private class LoginCallback(activity: FirefoxDataInRecyclerViewExampleKotlinActivity) : FirefoxDataLoginManager.LoginCallback {
         private val activityWeakReference = WeakReference(activity)
 
         override fun onSuccess(dataClient: FirefoxDataClient) {
@@ -169,9 +169,9 @@ class KotlinExampleActivity : AppCompatActivity() {
     }
 
     val signInAction = { v: View ->
-        loginManager.promptLogin(this@KotlinExampleActivity,
+        loginManager.promptLogin(this@FirefoxDataInRecyclerViewExampleKotlinActivity,
                 resources.getString(R.string.app_name),
-                LoginCallback(this@KotlinExampleActivity))
+                LoginCallback(this@FirefoxDataInRecyclerViewExampleKotlinActivity))
         isWaitingForCallback = true
         updateUI(UIState.LOADING)
     }
